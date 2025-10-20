@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Питаємо користувача
+echo -n "Enter a sentence: "
+read sentence
+
+# Створюємо порожню змінну для результату
+reversed_sentence=""
+
+# Проходимо по кожному слову в реченні
+for word in $sentence; do
+  reversed_sentence="$word $reversed_sentence"
+done
+
+# Виводимо результат
+echo "Reversed sentence: $reversed_sentence"
