@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# створює теку якщо її немає
+mkdir -p ~/watch
+
+# нескінченний цикл перевірки
+while true; do
+  for file in ~/watch/*; do
+    # пропускаємо файли, які вже мають .back
+    if [[ "$file" == *.back ]]; then
+      continue
+    fi
+    # якщо це звичайний файл
+    if [[ -f "$file" ]]; then
+      cat "$file"
+      mv "$file" "$file.back"
+    fi
+  done
+  sleep 5
+done
