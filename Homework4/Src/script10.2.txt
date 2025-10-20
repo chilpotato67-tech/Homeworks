@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch and backup and print files
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/wotchingsevice.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
