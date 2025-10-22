@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"
+  config.vm.network "public_network"
+config.vm.network "forwarded_port", guest: 82, host: 8081
+  config.vm.provision "shell", inline: <<-SHELL
+    apt update -y
+    apt install -y nginx
+    sed -i 's/listen 80 default_server;/listen 82 default_server;/g' /etc/nginx/sites-available/default
+    sed -i 's/listen \\[::\\]:80 default_server;/listen \\[::\\]:82 default_server;/g' /etc/nginx/sites-available/default
+    systemctl restart nginx
+  SHELL
+end
