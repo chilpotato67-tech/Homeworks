@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+secret=$(( RANDOM % 100 + 1 ))
+try=0
+
+
+while [ $try -lt 5 ]; do
+ read -p "Ведіть число" guess
+ ((try++))
+
+
+if [ "$guess" -eq "$secret" ]; then
+  echo "Вітаємо! ви вгадали"
+  exit 0
+
+
+elif [ "$guess" -gt "$secret" ]; then
+  echo "За високо"
+
+else
+  echo "За низько"
+fi
+done
+echo "Вибачте спроби всьо"
