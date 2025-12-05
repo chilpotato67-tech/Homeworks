@@ -1,0 +1,25 @@
+import random
+
+def guess_number():
+    guess = random.randint(1, 100)
+    print("У вас є 5 спроб вгадати число. Введіть число від 1 до 100.")
+
+    for i in range(5):
+        try:
+            user_input = int(input("Введіть ваше число: "))
+        except ValueError:
+            print("Будь ласка, введіть дійсне ціле число.")
+            continue
+
+        if user_input == guess:
+            print("Вітаємо! Ви вгадали число!")
+            return
+
+        elif user_input < guess:
+            print("Ваше число менше загадяного.")
+        else:
+            print("Ваше число більше загадяного.")
+
+    print(f"Ви не вгадали. Загадане число було: {guess}")
+
+guess_number()
