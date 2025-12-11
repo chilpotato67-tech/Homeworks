@@ -1,0 +1,34 @@
+class Alphabet:
+    def __init__(self, lang, letters):
+        self.lang = lang
+        self.letters = letters
+
+    def printLetters(self):
+        print (f"Letter: {self.letters}")
+
+    def lettersNum(self):
+        print (len(self.letters))
+
+class EnglishAlphabet(Alphabet):
+    _letters_num = 3
+    def __init__(self):
+        super().__init__('Eng', 'ABC')
+
+    def s_en_letter(self, letter):
+        return letter.upper() in self.letters
+
+    def lettersNum(self):
+        return EnglishAlphabet._letters_num
+
+    @staticmethod
+    def example():
+        return "London is a capital og Great Britan"
+
+
+alph = EnglishAlphabet()
+
+alph.printLetters()
+print (f"Кількість літер: {alph.lettersNum()}")
+print (f"Чи належить 'c' {alph.s_en_letter('c')}")
+print (f"Чи належить 'щ' {alph.s_en_letter('щ')}")
+print (f"{EnglishAlphabet.example()}")
