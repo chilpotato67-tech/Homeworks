@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run oneline script
+        run: echo "Hello, World!"
+
+      - name: Run multiline script
+        run: |
+          echo "This is a multiline script."
+          echo "It can run multiple commands."
+          echo "Each command is on a new line."
