@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    container_name: students-api-app
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: students-api-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    volumes:
+      - ./nginx-default.conf:/etc/nginx/conf.d/default.conf:ro

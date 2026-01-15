@@ -1,0 +1,25 @@
+stages:
+  - lint
+  - build
+  - test
+  - package
+
+lint_code:
+  stage: lint
+  script:
+    - echo "Linting code..."
+
+compile_code:
+  stage: build
+  script:
+    - echo "Compiling code..."
+
+unit_test:
+  stage: test
+  script:
+    - echo "Running unit tests..."
+
+package_artifacts:
+  stage: package
+  script:
+    - echo "Packaging artifacts..."
