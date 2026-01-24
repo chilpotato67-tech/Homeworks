@@ -1,6 +1,0 @@
-admin
-2a5093560b8a41ad83d419f004b25183
-
-http://192.168.56.10:8080/
-usr-> admin
-pass-> adminadmin1234

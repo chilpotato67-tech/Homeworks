@@ -1,0 +1,13 @@
+# secrets
+psw.txt
+*.secret
+*.env
+
+# vagrant
+.vagrant/
+**/.vagrant/
+
+# junk
+*.log
+.DS_Store
+Thumbs.db
