@@ -5,13 +5,13 @@
 - Jenkins Controller запущений на VM1 (в Docker)
 - Jenkins Worker встановлений напряму на VM2 (systemd service, без Docker для Jenkins)
 - Pipeline запускається вручну та виконується на Jenkins Worker
-- Після успішних тестів Docker image пушиться в Docker Hub
+- після успішних тестів Docker image пушиться в Docker Hub
 
 ## Окремий репозиторій з Node.js застосунком (forStep2)
 RepoStep (source code):
 https://github.com/chilpotato67-tech/RepoStep
 
-Саме цей репозиторій використовується в Jenkins як SCM (звідки тягнеться код для pipeline).
+Цей репозиторій використовується в Jenkins як SCM (звідки тягнеться код для pipeline).
 
 ## Docker Hub (результат push)
 Docker image:
@@ -27,13 +27,17 @@ Pipeline виконує кроки:
 
 Якщо тести провалюються — виводиться повідомлення: `Tests failed`
 
-## Що знаходиться в цій папці (src)
+## Структура проекту (Step project 2)
+- `src/` — основні файли Step Project 2 (pipeline + Docker + Vagrant)
+- `screen/` — скріншоти виконання (докази запуску)
+- `RepoStep/` — git submodule (посилання на окремий репозиторій з Node.js застосунком)
+
+## Що знаходиться в `src/`
 - `Jenkinsfile` — Groovy pipeline
 - `Dockerfile` — збірка Docker-образу
 - `package.json` — залежності та scripts (start/test)
 - `app.js` — Node.js застосунок
-- `tests/` або `test.js` — тест  для pipeline
-- `diagram.puml` — схема архітектури 
-- `screen/` — скріншоти виконання 
-- `jenkins-vagrant/` — Vagrant конфіг для 2 VM 
-
+- `test/` — тести для pipeline
+- `diagram.puml` — схема архітектури
+- `jenkins-vagrant/` — Vagrant конфіг для 2 VM
+- `.vagrant/` — службова папка Vagrant (локальна)
