@@ -1,6 +1,53 @@
+@startuml
+skinparam backgroundColor white
+left to right direction
+skinparam shadowing true
 
-psw.txt
-.vagrant/
-node_modules/
-*.log
+' ==== NODES ====
+node "Windows Host" as host #EAF2FF {
+  rectangle "VS Code" as vscode
+  rectangle "Browser\nlocalhost:8090" as browser
+}
 
+node "VM1: jenkins-master\n192.168.56.10" as vm1 #FFF4E6 {
+  rectangle "Jenkins Controller\n(jenkins/jenkins:lts-jdk17)\n:8080" as jenkins
+  rectangle "Docker" as docker_vm1
+}
+
+node "VM2: jenkins-worker\n192.168.56.11" as vm2 #EFFFF1 {
+  rectangle "Jenkins Agent\n(systemd service)" as agent
+  rectangle "Docker Engine" as docker_vm2
+  rectangle "Node.js Build/Test" as nodejs
+}
+
+cloud "GitHub" as github {
+  rectangle "[[https://github.com/chilpotato67-tech/RepoStep RepoStep repository]]" as repo
+}
+
+cloud "Step project 2 (files)" as files {
+  rectangle "[[https://github.com/chilpotato67-tech/Homeworks/blob/main/Step%20project%202/src/Jenkinsfile Jenkinsfile]]" as jf
+  rectangle "[[https://github.com/chilpotato67-tech/Homeworks/blob/main/Step%20project%202/src/Dockerfile Dockerfile]]" as df
+  rectangle "[[https://github.com/chilpotato67-tech/Homeworks/blob/main/Step%20project%202/src/package.json package.json]]" as pkg
+  rectangle "[[https://github.com/chilpotato67-tech/Homeworks/tree/main/Step%20project%202/screen screen/ (screenshots)]]" as scr
+  rectangle "[[https://github.com/chilpotato67-tech/Homeworks/tree/main/Step%20project%202/src/jenkins-vagrant jenkins-vagrant/]]" as vag
+}
+
+cloud "Docker Hub" as hub {
+  rectangle "[[https://hub.docker.com/r/duckdogduc/forstep2 duckdogduc/forstep2]]" as image
+}
+
+' ==== FLOW ====
+browser --> jenkins : Open UI\n(8090 -> 8080)
+jenkins --> repo : 1) Pull code\n(git clone)
+jenkins --> agent : 2) Run pipeline\n(label: worker)
+agent --> docker_vm2 : 3) Build image\n(tag + latest)
+agent --> nodejs : 4) Run tests\n(jest)
+agent --> hub : 5) docker login\n+ push image
+
+' ==== FILE LINKS (optional arrows) ====
+jenkins ..> jf : pipeline file
+docker_vm2 ..> df : build config
+nodejs ..> pkg : npm scripts
+host ..> scr : proof screenshots
+vm1 ..> vag : Vagrant config
+@enduml
