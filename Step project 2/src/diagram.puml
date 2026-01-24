@@ -1,0 +1,59 @@
+@startuml
+skinparam backgroundColor white
+skinparam componentStyle rectangle
+skinparam shadowing true
+left to right direction
+
+' ===== Styles =====
+skinparam rectangle {
+  RoundCorner 15
+  BorderColor #333333
+}
+
+skinparam node {
+  RoundCorner 20
+  BorderColor #333333
+}
+
+skinparam cloud {
+  BorderColor #333333
+}
+
+' ===== HOST =====
+node "Windows Host" as host #EAF2FF {
+  rectangle "Browser\nlocalhost:8090" as browser #FFFFFF
+  rectangle "VS Code" as vscode #FFFFFF
+}
+
+' ===== MASTER =====
+node "VM1: jenkins-master\n192.168.56.10" as master #FFF4E6 {
+  rectangle "Docker" as dmaster #FFFFFF
+  rectangle "Jenkins Controller\njenkins/jenkins:lts-jdk17\n:8080" as jenkins #FFFFFF
+}
+
+' ===== WORKER =====
+node "VM2: jenkins-worker\n192.168.56.11" as worker #EFFFF1 {
+  rectangle "Jenkins Agent\n(systemd service)" as agent #FFFFFF
+  rectangle "Docker Engine" as dockerw #FFFFFF
+  rectangle "Node.js Build/Test" as nodejs #FFFFFF
+}
+
+' ===== EXTERNAL =====
+cloud "GitHub" as github #F3F3F3 {
+  rectangle "RepoStep Repository" as repo #FFFFFF
+}
+
+cloud "Docker Hub" as hub #F3F3F3 {
+  rectangle "duckdogduc/forstep2" as image #FFFFFF
+}
+
+' ===== FLOW =====
+browser --> jenkins : Open UI\n(8090 -> 8080)
+jenkins --> repo : 1) Pull code\n(git clone)
+jenkins --> agent : 2) Run pipeline\n(label: worker)
+
+agent --> dockerw : 3) Build image\n(tag + latest)
+agent --> nodejs : 4) Run tests\n(jest)
+agent --> hub : 5) docker login\n+ push image
+
+@enduml
