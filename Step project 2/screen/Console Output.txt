@@ -1,0 +1,229 @@
+Started by user administrator
+Obtained Jenkinsfile from git https://github.com/chilpotato67-tech/RepoStep
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on jenkins-worker in /home/vagrant/jenkins/workspace/Pr2
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+Warning: CredentialId "4af18283-1ea2-4808-b3b6-e139ba05a84c" could not be found.
+Fetching changes from the remote Git repository
+Checking out Revision 8e94dc97d6be509fd19628958ef10f7340e22c64 (refs/remotes/origin/main)
+Commit message: "Update Jenkinsfile"
+ > git rev-parse --resolve-git-dir /home/vagrant/jenkins/workspace/Pr2/.git # timeout=10
+ > git config remote.origin.url https://github.com/chilpotato67-tech/RepoStep # timeout=10
+Fetching upstream changes from https://github.com/chilpotato67-tech/RepoStep
+ > git --version # timeout=10
+ > git --version # 'git version 2.34.1'
+ > git fetch --tags --force --progress -- https://github.com/chilpotato67-tech/RepoStep +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8e94dc97d6be509fd19628958ef10f7340e22c64 # timeout=10
+ > git rev-list --no-walk 8e94dc97d6be509fd19628958ef10f7340e22c64 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Pull the code)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+Warning: CredentialId "4af18283-1ea2-4808-b3b6-e139ba05a84c" could not be found.
+Fetching changes from the remote Git repository
+Checking out Revision 8e94dc97d6be509fd19628958ef10f7340e22c64 (refs/remotes/origin/main)
+Commit message: "Update Jenkinsfile"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build image)
+[Pipeline] sh
++ docker build -t duckdogduc/forstep2:25 -t duckdogduc/forstep2:latest .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  129.5kB
+Step 1/8 : FROM node:14
+ ---> 1d12470fa662
+Step 2/8 : WORKDIR /app
+ ---> Using cache
+ ---> ec129f76c2f1
+Step 3/8 : COPY package*.json ./
+ ---> Using cache
+ ---> b07ac5057e6f
+Step 4/8 : RUN npm install
+ ---> Using cache
+ ---> 338d9812b0dd
+Step 5/8 : COPY . .
+ ---> Using cache
+ ---> ff4ec55cc93a
+Step 6/8 : EXPOSE 3000
+ ---> Using cache
+ ---> 0639d099bf92
+Step 7/8 : ENTRYPOINT ["npm"]
+ ---> Using cache
+ ---> 8f463dd2895a
+Step 8/8 : CMD ["start"]
+ ---> Using cache
+ ---> 9972f20fad84
+Successfully built 9972f20fad84
+Successfully tagged duckdogduc/forstep2:25
+Successfully tagged duckdogduc/forstep2:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run tests)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+ > git rev-parse --resolve-git-dir /home/vagrant/jenkins/workspace/Pr2/.git # timeout=10
+ > git config remote.origin.url https://github.com/chilpotato67-tech/RepoStep # timeout=10
+Fetching upstream changes from https://github.com/chilpotato67-tech/RepoStep
+ > git --version # timeout=10
+ > git --version # 'git version 2.34.1'
+ > git fetch --tags --force --progress -- https://github.com/chilpotato67-tech/RepoStep +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8e94dc97d6be509fd19628958ef10f7340e22c64 # timeout=10
++ docker run --rm duckdogduc/forstep2:25 test
+
+> app@1.0.0 test /app
+> jest
+
+  console.log
+    App listening
+
+      at Server.log (index.js:11:11)
+
+PASS tests/app.test.js
+  GET /
+    ✓ responds to / (113 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.481 s
+Ran all test suites.
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Login to Docker Hub)
+[Pipeline] withCredentials
+Masking supported pattern matches of $DH_PASS
+[Pipeline] {
+[Pipeline] sh
++ + dockerecho login **** -u
+ duckdogduc --password-stdin
+
+WARNING! Your credentials are stored unencrypted in '/home/vagrant/.docker/config.json'.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+Login Succeeded
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push image)
+[Pipeline] sh
++ docker push duckdogduc/forstep2:25
+The push refers to repository [docker.io/duckdogduc/forstep2]
+9898c5310c62: Preparing
+1f617efe3d17: Preparing
+09f65c223044: Preparing
+ce658d6d3f49: Preparing
+0d5f5a015e5d: Preparing
+3c777d951de2: Preparing
+f8a91dd5fc84: Preparing
+cb81227abde5: Preparing
+e01a454893a9: Preparing
+c45660adde37: Preparing
+fe0fb3ab4a0f: Preparing
+f1186e5061f2: Preparing
+b2dba7477754: Preparing
+e01a454893a9: Waiting
+c45660adde37: Waiting
+3c777d951de2: Waiting
+f8a91dd5fc84: Waiting
+cb81227abde5: Waiting
+fe0fb3ab4a0f: Waiting
+f1186e5061f2: Waiting
+b2dba7477754: Waiting
+09f65c223044: Layer already exists
+9898c5310c62: Layer already exists
+0d5f5a015e5d: Layer already exists
+ce658d6d3f49: Layer already exists
+1f617efe3d17: Layer already exists
+f8a91dd5fc84: Layer already exists
+3c777d951de2: Layer already exists
+cb81227abde5: Layer already exists
+c45660adde37: Layer already exists
+e01a454893a9: Layer already exists
+f1186e5061f2: Layer already exists
+b2dba7477754: Layer already exists
+fe0fb3ab4a0f: Layer already exists
+25: digest: sha256:17f2796c7e081caa7482efd2749af4a079fee3c6201dd4672548edc91e55205c size: 3049
+[Pipeline] sh
++ docker push duckdogduc/forstep2:latest
+The push refers to repository [docker.io/duckdogduc/forstep2]
+9898c5310c62: Preparing
+1f617efe3d17: Preparing
+09f65c223044: Preparing
+ce658d6d3f49: Preparing
+0d5f5a015e5d: Preparing
+3c777d951de2: Preparing
+f8a91dd5fc84: Preparing
+cb81227abde5: Preparing
+e01a454893a9: Preparing
+c45660adde37: Preparing
+fe0fb3ab4a0f: Preparing
+f1186e5061f2: Preparing
+b2dba7477754: Preparing
+cb81227abde5: Waiting
+e01a454893a9: Waiting
+c45660adde37: Waiting
+fe0fb3ab4a0f: Waiting
+f1186e5061f2: Waiting
+b2dba7477754: Waiting
+3c777d951de2: Waiting
+f8a91dd5fc84: Waiting
+1f617efe3d17: Layer already exists
+0d5f5a015e5d: Layer already exists
+09f65c223044: Layer already exists
+9898c5310c62: Layer already exists
+ce658d6d3f49: Layer already exists
+e01a454893a9: Layer already exists
+f8a91dd5fc84: Layer already exists
+c45660adde37: Layer already exists
+cb81227abde5: Layer already exists
+3c777d951de2: Layer already exists
+f1186e5061f2: Layer already exists
+fe0fb3ab4a0f: Layer already exists
+b2dba7477754: Layer already exists
+latest: digest: sha256:17f2796c7e081caa7482efd2749af4a079fee3c6201dd4672548edc91e55205c size: 3049
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] sh
++ docker logout
+Removing login credentials for https://index.docker.io/v1/
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
