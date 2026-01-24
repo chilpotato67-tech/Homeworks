@@ -1,0 +1,6 @@
+
+psw.txt
+.vagrant/
+node_modules/
+*.log
+
