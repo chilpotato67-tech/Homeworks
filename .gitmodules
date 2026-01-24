@@ -1,3 +1,6 @@
 [submodule "RepoStep"]
 	path = RepoStep
 	url = https://github.com/chilpotato67-tech/RepoStep
+[submodule "Step project 2/Step project 2/RepoStep"]
+	path = Step project 2/Step project 2/RepoStep
+	url = https://github.com/chilpotato67-tech/RepoStep
