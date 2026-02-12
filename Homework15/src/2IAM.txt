@@ -1,0 +1,32 @@
+{
+  Version 2012-10-17,
+  Statement [
+    {
+      Sid ConsoleListBuckets,
+      Effect Allow,
+      Action [
+        s3ListAllMyBuckets,
+        s3GetBucketLocation
+      ],
+      Resource 
+    },
+    {
+      Sid AllowListBucketDzhomeworkdz,
+      Effect Allow,
+      Action [
+        s3ListBucket
+      ],
+      Resource arnawss3dzhomeworkdz
+    },
+    {
+      Sid AllowRWObjectsDzhomeworkdz,
+      Effect Allow,
+      Action [
+        s3GetObject,
+        s3PutObject,
+        s3DeleteObject
+      ],
+      Resource arnawss3dzhomeworkdz
+    }
+  ]
+}
