@@ -1,0 +1,52 @@
+﻿---
+- name: Install Docker, Docker Compose and run Nginx
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Upgrade packages
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: Install Docker and Docker Compose
+      ansible.builtin.apt:
+        name:
+          - docker.io
+          - docker-compose
+        state: present
+
+    - name: Ensure Docker is started and enabled
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create app directory
+      ansible.builtin.file:
+        path: /opt/nginx-app
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Copy docker compose file
+      ansible.builtin.copy:
+        src: docker-compose.yml
+        dest: /opt/nginx-app/docker-compose.yml
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+
+    - name: Pull Nginx image
+      ansible.builtin.command:
+        cmd: docker pull nginx:latest
+
+    - name: Run Nginx with Docker Compose
+      ansible.builtin.command:
+        cmd: docker-compose up -d
+      args:
+        chdir: /opt/nginx-app
