@@ -1,0 +1,36 @@
+---
+- name: My first play
+  hosts: all
+  become: true
+  tasks:
+    - name: Print a message
+      ansible.builtin.debug:
+        msg: "Hello world, Ansible is running!"
+    - name: update ubuntu
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: dist 
+    - name: install docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present  
+    - name: check docker status
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: yes  
+    - name: create aplication directory
+      ansible.builtin.file:
+        path: /opt/app
+        state: directory  
+        ouwner: ubuntu
+    - name: copy docker-compose file
+      ansible.builtin.copy:
+        src: ./docker-compose.yml
+        dest: /opt/app/docker-compose.yml
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+    - name: run docker-compose
+      ansible.builtin.command:
+        cmd: docker-compose -f /opt/app/docker-compose.yml up -d
