@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+
+**/.terraform/
+
+=======
 .terraform/
 *.tfstate
 *.tfstate.*
@@ -10,3 +15,4 @@ override.tf.json
 *_override.tf.json
 .terraformrc
 terraform.rc
+>>>>>>> 1af2f52 (Add Homework20 Terraform module with EC2, Nginx and S3 backend)
