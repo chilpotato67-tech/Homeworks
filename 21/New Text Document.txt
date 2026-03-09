@@ -1,0 +1,70 @@
+terraform {
+  required_version = ">= 1.2"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.92"
+    }
+  }
+#   #backend "s3" {
+#    # bucket = "terraform-state-danit-devops-devops-cli-user-463886700224"
+#     key    = "devops-cli-user/aws-terraform-module-exercise/terraform.tfstate"
+#     region = "eu-central-1"
+#   }
+}
+provider "aws" {
+  region = "eu-central-1"
+}
+resource "aws_security_group" "nginx_sg" {
+  description = "Allow selected ports from anywhere"
+  vpc_id      = "vpc-0bf29b7e6718bed21"
+#   dynamic "ingress" {
+#     for_each = var.list_of_open_ports
+#     content {
+#       from_port   = ingress.value
+#       to_port     = ingress.value
+#       protocol    = "tcp"
+#       cidr_blocks = ["0.0.0.0/0"]
+#     }
+#   }
+ ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+   ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "nginx-module-sg"
+  }
+}
+resource "aws_instance" "nginx" {
+ count=2
+  ami                         = "ami-073130f74f5ffb161"
+  instance_type               = "t2.micro"
+  vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
+  associate_public_ip_address = true
+key_name = "dz3"
+  tags = {
+    Name = "nginx-module-ec2"
+  }
+}
+resource "local_file" "ansible_inventory" {
+  content  = <<EOT
+[webservers]
+${aws_instance.nginx[0].public_ip} ansible_user=ubuntu
+${aws_instance.nginx[1].public_ip} ansible_user=ubuntu
+EOT
+  filename = "inventory.ini"
+}
