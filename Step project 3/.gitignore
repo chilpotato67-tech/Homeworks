@@ -1,0 +1,28 @@
+﻿# Secrets
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Terraform local files
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform variable files with secrets
+*.auto.tfvars
+secrets.tfvars
+terraform.tfvars.local
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+pr1.pub
