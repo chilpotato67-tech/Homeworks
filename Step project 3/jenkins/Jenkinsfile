@@ -1,0 +1,59 @@
+pipeline {
+    agent { label 'worker' }
+
+    options {
+        timestamps()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Environment Info') {
+            steps {
+                sh '''
+                    echo "Running on agent:"
+                    hostname
+                    whoami
+                    pwd
+                    java -version
+                    git --version
+                '''
+            }
+        }
+
+        stage('Verify Files') {
+            steps {
+                sh '''
+                    echo "Repository root:"
+                    ls -la
+                    echo "Step project 3 contents:"
+                    ls -la "Step project 3" || true
+                    echo "Jenkins folder contents:"
+                    ls -la "Step project 3/jenkins" || true
+                '''
+            }
+        }
+
+        stage('Done') {
+            steps {
+                echo 'Pipeline finished successfully on worker node'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Build completed'
+        }
+        success {
+            echo 'Build status: SUCCESS'
+        }
+        failure {
+            echo 'Build status: FAILURE'
+        }
+    }
+}
