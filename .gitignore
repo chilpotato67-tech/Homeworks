@@ -1,0 +1,10 @@
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.zip
+*.7z
+*.rar
+*.log
+Thumbs.db
+Desktop.ini
