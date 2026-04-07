@@ -1,4 +1,4 @@
-﻿resource "aws_instance" "jenkins_master" {
+resource "aws_instance" "jenkins_master" {
   ami                         = var.ami_id
   instance_type               = var.master_instance_type
   subnet_id                   = aws_subnet.public.id
@@ -30,7 +30,7 @@ resource "aws_spot_instance_request" "jenkins_worker" {
   subnet_id              = aws_subnet.private.id
   vpc_security_group_ids = [aws_security_group.jenkins_worker_sg.id]
   key_name               = var.key_pair_name
-  spot_type = "persistent"
+  spot_type              = "persistent"
   wait_for_fulfillment   = true
 
   user_data = <<-EOF
