@@ -1,4 +1,0 @@
-cat > src/application/.dockerignore <<'EOF'
-node_modules
-npm-debug.log
-EOF

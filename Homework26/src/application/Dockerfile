@@ -1,4 +1,3 @@
-cat > src/application/Dockerfile <<'EOF'
 FROM node:20-alpine
 
 WORKDIR /app
@@ -9,5 +8,6 @@ RUN npm install
 
 COPY . .
 
+EXPOSE 10000
+
 CMD ["node", "index.js"]
-EOF
