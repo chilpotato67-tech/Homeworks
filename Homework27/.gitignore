@@ -1,0 +1,9 @@
+﻿Src/Bot token/
+**/*token*
+**/*Token*
+**/*.bak*
+**/*.backup*
+**/*.tmp
+**/check_homework27.ps1
+**/setup_telegram_alertmanager.ps1
+**/trigger_cadvisor_down_alert.ps1
