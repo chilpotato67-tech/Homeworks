@@ -1,4 +1,4 @@
-﻿groups:
+groups:
   - name: homework27-alerts
     rules:
       - alert: LowDiskFreeSpace
@@ -23,3 +23,11 @@
         annotations:
           summary: "cAdvisor container is down"
           description: "Prometheus cannot scrape cAdvisor. Docker container monitoring is not available."
+      - alert: HighCPUUsage
+        expr: (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m]))) * 100 > 80
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on node-exporter"
+          description: "CPU usage is above 80 percent."
