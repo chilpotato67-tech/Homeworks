@@ -1,0 +1,35 @@
+groups:
+  - name: homework-monitoring-alerts
+    rules:
+      - alert: LowDiskFreeSpace
+        expr: |
+          (
+            node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|fuse.*", mountpoint!~"/var/lib/docker.*"}
+            /
+            node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|fuse.*", mountpoint!~"/var/lib/docker.*"}
+          ) * 100 < 15
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low free disk space on {{ $labels.instance }}"
+          description: "Free disk space is below 15% on mountpoint {{ $labels.mountpoint }}. Current value: {{ printf \"%.2f\" $value }}%."
+
+      - alert: HighCpuUsage
+        expr: |
+          100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is above 80%. Current value: {{ printf \"%.2f\" $value }}%."
+
+      - alert: TargetDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus target is down: {{ $labels.job }}"
+          description: "Target {{ $labels.instance }} from job {{ $labels.job }} is not available for Prometheus scraping."
